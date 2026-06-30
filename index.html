@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intellect Quiz | Home</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom Global Stylesheet -->
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .hero-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+    .hero-text {
+      flex: 1.2;
+    }
+    .hero-graphics {
+      flex: 0.8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .floating-cards-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      width: 100%;
+    }
+    .feat-card {
+      background: rgba(255, 255, 255, 0.7); /* Light translucent background */
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--border-radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .feat-card:hover {
+      transform: translateY(-5px);
+      border-color: #117aa0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    .feat-card i {
+      font-size: 1.75rem;
+      margin-bottom: 0.25rem;
+      color: #117aa0; /* Brand secondary blue */
+    }
+    .feat-card.primary i {
+      color: #02c460; /* Brand green */
+    }
+    .feat-card h3 {
+      font-size: 1.15rem;
+      color: #333;
+      margin: 0;
+    }
+    .feat-card p {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0;
+    }
+    
+    /* Stats dashboard styling */
+    .stats-container {
+      margin-top: 4rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      padding-top: 2rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--border-radius-sm);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+      transition: var(--transition-smooth);
+    }
+    .stat-box:hover {
+      background: #ffffff;
+      border-color: #117aa0;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    }
+    .stat-val {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #117aa0;
+      margin-bottom: 0.25rem;
+      font-family: monospace;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .no-stats {
+      color: #888;
+      font-style: italic;
+      font-size: 0.95rem;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 2rem;
+      border: 1px dashed rgba(0, 0, 0, 0.15);
+      border-radius: var(--border-radius-sm);
+    }
+    @media (max-width: 992px) {
+      .hero-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+      }
+      .floating-cards-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 576px) {
+      .floating-cards-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        Intellect Quiz
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="services.html" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Services</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="hero-section animated-fade-in">
+      <div class="hero-text">
+        <h1 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem; color: #117aa0; font-weight: 800;">Test Your Knowledge. Challenge Your Mind.</h1>
+        <p class="subtitle" style="font-size: 1.2rem; line-height: 1.6; color: #555;">
+          Intellect Quiz offers beautifully crafted, interactive quizzes across CSS, Geography, History, and Sports. Race the clock, beat your high scores, and expand your intellect.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="select.html" class="btn-primary-custom"><i class="fa-solid fa-rocket"></i> Get Started Now</a>
+          <a href="about.html" class="btn-secondary-custom"><i class="fa-solid fa-magnifying-glass"></i> Learn More</a>
+        </div>
+      </div>
+
+      <div class="hero-graphics">
+        <div class="floating-cards-container">
+          <div class="feat-card primary">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h3>Timed Action</h3>
+            <p>15 seconds per question. Think fast, answer correct.</p>
+          </div>
+          <div class="feat-card">
+            <i class="fa-solid fa-globe"></i>
+            <h3>Geography</h3>
+            <p>Discover world capitals, oceans, landmarks, and landscapes.</p>
+          </div>
+          <div class="feat-card">
+            <i class="fa-solid fa-code"></i>
+            <h3>CSS Styling</h3>
+            <p>Test selectors, flexbox rules, grid coordinates, and styles.</p>
+          </div>
+          <div class="feat-card primary">
+            <i class="fa-solid fa-trophy"></i>
+            <h3>Track Stats</h3>
+            <p>Saves high scores locally to see your constant growth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal High Scores Dashboard -->
+    <div class="stats-container animated-fade-in" style="animation-delay: 0.2s;">
+      <h2 style="font-size: 1.75rem; border-left: 4px solid #117aa0; padding-left: 0.75rem; margin-bottom: 0.5rem; color: #117aa0;">Your Local Stats</h2>
+      <p style="color: #555; margin-bottom: 1.5rem;">Perform quizzes to build your local high scores dashboard.</p>
+      
+      <div class="stats-grid" id="stats-grid">
+        <!-- Will be filled dynamically by JS -->
+        <div class="no-stats">Loading dashboard stats...</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="footer-content">
+      <div>&copy; 2026 Intellect Quiz. Made for Visual and Technical Excellence.</div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Toggle for Mobile
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('mobile-open');
+    });
+
+    // Populate dashboard statistics from localStorage
+    function loadStats() {
+      const statsGrid = document.getElementById('stats-grid');
+      const categories = [
+        { key: 'history', title: 'History Quiz', icon: 'fa-monument', color: '#117aa0' },
+        { key: 'sports', title: 'Sports Quiz', icon: 'fa-volleyball', color: '#f59e0b' },
+        { key: 'css', title: 'CSS Quiz', icon: 'fa-code', color: '#06b6d4' },
+        { key: 'geography', title: 'Geography Quiz', icon: 'fa-earth-americas', color: '#02c460' }
+      ];
+
+      let totalAttempts = 0;
+      let hasAnyData = false;
+      let htmlContent = '';
+
+      categories.forEach(cat => {
+        const score = localStorage.getItem(`highScore_${cat.key}`);
+        const attempts = localStorage.getItem(`attempts_${cat.key}`) || 0;
+        totalAttempts += parseInt(attempts);
+
+        if (score !== null) {
+          hasAnyData = true;
+          htmlContent += `
+            <div class="stat-box">
+              <i class="fa-solid ${cat.icon}" style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem; display: inline-block; padding: 0.5rem 0.65rem; border-radius: 50%; background: ${cat.color}"></i>
+              <div class="stat-val">${score} / 10</div>
+              <div class="stat-label">${cat.title} Best</div>
+              <div style="font-size: 0.75rem; color: #888; margin-top: 0.25rem;">Attempts: ${attempts}</div>
+            </div>
+          `;
+        }
+      });
+
+      if (hasAnyData) {
+        // Add total attempts summary
+        htmlContent = `
+          <div class="stat-box" style="background: rgba(17, 122, 160, 0.05); border-color: rgba(17, 122, 160, 0.2);">
+            <i class="fa-solid fa-fire" style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem; display: inline-block; padding: 0.5rem 0.65rem; border-radius: 50%; background: #117aa0"></i>
+            <div class="stat-val" style="color: #117aa0;">${totalAttempts}</div>
+            <div class="stat-label">Total Quizzes Run</div>
+          </div>
+        ` + htmlContent;
+        statsGrid.innerHTML = htmlContent;
+      } else {
+        statsGrid.innerHTML = `
+          <div class="no-stats">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #777;"></i>
+            <p>No scores recorded yet. Select a quiz category and test your skills!</p>
+            <a href="select.html" class="btn-primary-custom" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-play"></i> Start Quiz</a>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadStats);
+  </script>
+</body>
+</html>

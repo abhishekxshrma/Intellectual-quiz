@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intellect Quiz | Select Category</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom Global Stylesheet -->
+  <link rel="stylesheet" href="global.css">
+  <style>
+    /* Inherits light Alice Blue background from global.css */
+    .selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    /* Minimalist layout custom card styling */
+    .select-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+    }
+    .select-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      transition: background 0.3s;
+      z-index: 5;
+    }
+    
+    /* Card Hover States */
+    .select-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      border-color: rgba(17, 122, 160, 0.2);
+    }
+    .select-card.history-theme:hover::before { background: #6366f1; }
+    .select-card.sports-theme:hover::before { background: #f59e0b; }
+    .select-card.css-theme:hover::before { background: #06b6d4; }
+    .select-card.geography-theme:hover::before { background: #10b981; }
+
+    /* Top Icon Header Row */
+    .card-header-icon {
+      padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .icon-circle {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.75rem;
+      transition: all 0.3s ease;
+    }
+    .history-theme .icon-circle {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366f1;
+    }
+    .sports-theme .icon-circle {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+    .css-theme .icon-circle {
+      background: rgba(6, 182, 212, 0.1);
+      color: #06b6d4;
+    }
+    .geography-theme .icon-circle {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+    
+    /* Hover scale icon circle */
+    .select-card:hover .icon-circle {
+      transform: scale(1.1);
+    }
+
+    /* Score Badge beside the icon */
+    .score-badge-pills {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+    .score-badge-pills i {
+      color: #f59e0b;
+    }
+
+    /* Card Details Body */
+    .card-info {
+      padding: 1rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 0.75rem;
+    }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-difficulty {
+      background: rgba(0, 0, 0, 0.05);
+      color: #555;
+    }
+    .history-theme .pill-difficulty { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
+    .sports-theme .pill-difficulty { background: rgba(245, 158, 11, 0.1); color: #d97706; }
+    .css-theme .pill-difficulty { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
+    .geography-theme .pill-difficulty { background: rgba(16, 185, 129, 0.1); color: #059669; }
+    
+    .pill-count {
+      background: rgba(0, 0, 0, 0.05);
+      color: #666;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #333;
+      margin: 0;
+      transition: color 0.2s;
+    }
+    .select-card:hover .card-title {
+      color: #117aa0;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Start Button inside Card */
+    .play-action-btn {
+      margin-top: auto;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.04);
+      color: #444;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .select-card:hover .play-action-btn {
+      color: #fff;
+    }
+    .history-theme:hover .play-action-btn { background: #6366f1; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+    .sports-theme:hover .play-action-btn { background: #f59e0b; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+    .css-theme:hover .play-action-btn { background: #06b6d4; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); }
+    .geography-theme:hover .play-action-btn { background: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        Intellect Quiz
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="services.html" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Services</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="animated-fade-in" style="text-align: center; margin-bottom: 2rem;">
+      <h1 class="heading-gradient" style="font-size: 2.5rem; margin-bottom: 0.5rem; color: #117aa0;">Select Quiz Category</h1>
+      <p class="subtitle">Pick a subject to challenge your memory database and score achievements.</p>
+    </div>
+
+    <!-- Responsive high-fidelity grid of category cards -->
+    <div class="selection-grid animated-fade-in" style="animation-delay: 0.1s;">
+      
+      <!-- History Card -->
+      <a href="quiz-history.html" class="select-card history-theme">
+        <div class="card-header-icon">
+          <div class="icon-circle">
+            <i class="fa-solid fa-monument"></i>
+          </div>
+          <div class="score-badge-pills" id="score-history"><i class="fa-solid fa-trophy"></i> --</div>
+        </div>
+        <div class="card-info">
+          <div class="meta-row">
+            <span class="pill pill-difficulty">Medium</span>
+            <span class="pill pill-count">10 Questions</span>
+          </div>
+          <h2 class="card-title">History Quiz</h2>
+          <p class="card-desc">Review global events, discover key moments, and examine historical figures.</p>
+          <div class="play-action-btn">
+            Play Quiz <i class="fa-solid fa-circle-play"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Sports Card -->
+      <a href="quiz-sports.html" class="select-card sports-theme">
+        <div class="card-header-icon">
+          <div class="icon-circle">
+            <i class="fa-solid fa-volleyball"></i>
+          </div>
+          <div class="score-badge-pills" id="score-sports"><i class="fa-solid fa-trophy"></i> --</div>
+        </div>
+        <div class="card-info">
+          <div class="meta-row">
+            <span class="pill pill-difficulty">Easy</span>
+            <span class="pill pill-count">10 Questions</span>
+          </div>
+          <h2 class="card-title">Sports Quiz</h2>
+          <p class="card-desc">Show off your knowledge of championship records, famous athletes, and games.</p>
+          <div class="play-action-btn">
+            Play Quiz <i class="fa-solid fa-circle-play"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- CSS Card -->
+      <a href="quiz-css.html" class="select-card css-theme">
+        <div class="card-header-icon">
+          <div class="icon-circle">
+            <i class="fa-solid fa-code"></i>
+          </div>
+          <div class="score-badge-pills" id="score-css"><i class="fa-solid fa-trophy"></i> --</div>
+        </div>
+        <div class="card-info">
+          <div class="meta-row">
+            <span class="pill pill-difficulty">Hard</span>
+            <span class="pill pill-count">10 Questions</span>
+          </div>
+          <h2 class="card-title">CSS Quiz</h2>
+          <p class="card-desc">Test your layout layouts, core flexbox alignment rules, selectors, and variables.</p>
+          <div class="play-action-btn">
+            Play Quiz <i class="fa-solid fa-circle-play"></i>
+          </div>
+        </div>
+      </a>
+
+      <!-- Geography Card -->
+      <a href="quiz-geography.html" class="select-card geography-theme">
+        <div class="card-header-icon">
+          <div class="icon-circle">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="score-badge-pills" id="score-geography"><i class="fa-solid fa-trophy"></i> --</div>
+        </div>
+        <div class="card-info">
+          <div class="meta-row">
+            <span class="pill pill-difficulty">Medium</span>
+            <span class="pill pill-count">10 Questions</span>
+          </div>
+          <h2 class="card-title">Geography Quiz</h2>
+          <p class="card-desc">Navigate continents, state capitals, vast oceans, and geographical landmarks.</p>
+          <div class="play-action-btn">
+            Play Quiz <i class="fa-solid fa-circle-play"></i>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="footer-content">
+      <div>&copy; 2026 Intellect Quiz. Made for Visual and Technical Excellence.</div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Toggle for Mobile
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('mobile-open');
+    });
+
+    // Load Scores
+    function loadScores() {
+      const keys = ['history', 'sports', 'css', 'geography'];
+      keys.forEach(key => {
+        const score = localStorage.getItem(`highScore_${key}`);
+        if (score !== null) {
+          document.getElementById(`score-${key}`).innerHTML = `<i class="fa-solid fa-trophy"></i> ${score}/10`;
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadScores);
+  </script>
+</body>
+</html>

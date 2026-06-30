@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intellect Quiz | Sports</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom Global Stylesheet -->
+  <link rel="stylesheet" href="global.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+      background-attachment: fixed;
+      color: #333;
+    }
+    .quiz-layout {
+      max-width: 650px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+    .quiz-container {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85); /* Light glassmorphic panel */
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-heading {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #117aa0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+    }
+    
+    /* HUD Row for counters */
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .progress-container {
+      flex-grow: 1;
+      max-width: 60%;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 25px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #f59e0b; /* Orange Accent */
+      width: 0%;
+      border-radius: 25px;
+      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scoreboard {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #f59e0b; /* Orange Accent */
+    }
+    .timer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      transition: all 0.3s;
+    }
+    .timer-badge.low-time {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .question-card {
+      display: none;
+    }
+    .question-card.active {
+      display: block;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .question-text {
+      font-size: 1.35rem;
+      margin-bottom: 25px;
+      font-weight: 700;
+      color: #222;
+      line-height: 1.5;
+    }
+    .options {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    /* Option button design */
+    .option {
+      padding: 14px 20px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      color: #333;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: left;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+    .option-badge {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.04);
+      color: #555;
+      font-weight: 800;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      margin-right: 1.25rem;
+      transition: all 0.2s;
+    }
+    .option-text {
+      flex-grow: 1;
+    }
+    .option i {
+      font-size: 1.25rem;
+      opacity: 0.4;
+      color: #777;
+    }
+    
+    .option:hover:not(.disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+      border-color: #f59e0b; /* Orange Accent */
+    }
+    .option:hover:not(.disabled) .option-badge {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+    .option.correct {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      border-color: #059669 !important;
+      color: #fff !important;
+    }
+    .option.correct .option-badge {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #fff !important;
+    }
+    .option.correct i {
+      opacity: 1 !important;
+      color: #fff !important;
+    }
+    .option.incorrect {
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      border-color: #dc2626 !important;
+      color: #fff !important;
+    }
+    .option.incorrect .option-badge {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #fff !important;
+    }
+    .option.incorrect i {
+      opacity: 1 !important;
+      color: #fff !important;
+    }
+    .option.disabled {
+      pointer-events: none;
+      opacity: 0.65;
+    }
+    
+    /* Results screen design */
+    .results-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    .final-score {
+      font-size: 2rem;
+      margin: 15px 0;
+      color: #f59e0b;
+      font-weight: 800;
+    }
+    .action-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .restart-btn {
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      background: #f59e0b;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+    .restart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.3);
+    }
+    .review-section {
+      width: 100%;
+      text-align: left;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 2rem;
+    }
+    .review-item {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.02);
+      color: #333;
+    }
+    .review-item.correct-review {
+      border-left: 5px solid #10b981;
+    }
+    .review-item.incorrect-review {
+      border-left: 5px solid #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        Intellect Quiz
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="services.html" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Services</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="quiz-layout">
+      
+      <!-- Quiz Panel -->
+      <div id="quiz-game-panel" class="quiz-container animated-fade-in">
+        <!-- HUD Indicators -->
+        <div class="hud-row">
+          <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          <div class="scoreboard" id="scoreboard">Score: 0</div>
+        </div>
+        
+        <h1 class="quiz-heading">Sports Quiz</h1>
+        
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+          <div class="timer-badge" id="timer-box">
+            <i class="fa-solid fa-clock"></i> <span id="timer-sec">15</span>s
+          </div>
+        </div>
+
+        <div id="questions-container">
+          <!-- Q1 -->
+          <div class="question-card active" data-correct-idx="3">
+            <p class="question-text">1. Which team won the NBA Championship in 2021?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Los Angeles Lakers</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Miami Heat</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Golden State Warriors</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Milwaukee Bucks</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q2 -->
+          <div class="question-card" data-correct-idx="0">
+            <p class="question-text">2. Who holds the record for the fastest 100m sprint in the world?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Usain Bolt</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Carl Lewis</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Tyson Gay</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Justin Gatlin</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q3 -->
+          <div class="question-card" data-correct-idx="0">
+            <p class="question-text">3. Which country has won the most Olympic gold medals?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">United States</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Russia</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Germany</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">China</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q4 -->
+          <div class="question-card" data-correct-idx="1">
+            <p class="question-text">4. Which country is credited with inventing Rugby?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Australia</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">England</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">New Zealand</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">South Africa</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q5 -->
+          <div class="question-card" data-correct-idx="3">
+            <p class="question-text">5. Who holds the fastest ODI cricket century record?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Martin Guptill</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Corey Anderson</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Shahid Afridi</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">AB de Villiers</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q6 -->
+          <div class="question-card" data-correct-idx="2">
+            <p class="question-text">6. Which football club is called "The Red Devils"?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Liverpool</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Chelsea</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Manchester United</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Arsenal</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q7 -->
+          <div class="question-card" data-correct-idx="3">
+            <p class="question-text">7. When was Kabaddi introduced to the Asian Games?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">1982</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">2000</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">1996</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">1990</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q8 -->
+          <div class="question-card" data-correct-idx="0">
+            <p class="question-text">8. Who is the only tennis player to win a Golden Slam?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Steffi Graf</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Serena Williams</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Novak Djokovic</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Roger Federer</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q9 -->
+          <div class="question-card" data-correct-idx="0">
+            <p class="question-text">9. Which country hosted the FIFA World Cup in 2010?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">South Africa</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Brazil</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Germany</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Qatar</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Q10 -->
+          <div class="question-card" data-correct-idx="0">
+            <p class="question-text">10. Who has the most Grand Slam titles in men's tennis?</p>
+            <ul class="options">
+              <li>
+                <button class="option" onclick="selectAnswer(this, 0)">
+                  <span class="option-badge">A</span>
+                  <span class="option-text">Novak Djokovic</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 1)">
+                  <span class="option-badge">B</span>
+                  <span class="option-text">Roger Federer</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 2)">
+                  <span class="option-badge">C</span>
+                  <span class="option-text">Rafael Nadal</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+              <li>
+                <button class="option" onclick="selectAnswer(this, 3)">
+                  <span class="option-badge">D</span>
+                  <span class="option-text">Andy Murray</span>
+                  <i class="fa-regular fa-circle"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Panel -->
+      <div id="results-panel" class="quiz-container results-panel">
+        <h2 class="quiz-heading">Quiz Completed!</h2>
+        <div class="final-score" id="final-score">Your final score is: 0 / 10</div>
+        
+        <div class="action-row">
+          <button class="restart-btn" onclick="location.reload();"><i class="fa-solid fa-rotate-left"></i> Restart Quiz</button>
+          <a href="select.html" class="restart-btn" style="text-decoration: none; background: #f59e0b; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);"><i class="fa-solid fa-list"></i> Category Selector</a>
+          <a href="index.html" class="restart-btn" style="text-decoration: none; background: #117aa0; box-shadow: 0 4px 12px rgba(17, 122, 160, 0.2);"><i class="fa-solid fa-house"></i> Home</a>
+        </div>
+
+        <div class="review-section">
+          <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; font-weight: 700; color: #f59e0b;">Review Answers</h3>
+          <div id="review-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="footer-content">
+      <div>&copy; 2026 Intellect Quiz. Made for Visual and Technical Excellence.</div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Toggle
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('mobile-open');
+    });
+
+    // Quiz Game Logic
+    const categoryKey = 'sports';
+    const cards = document.querySelectorAll('.question-card');
+    const progressBar = document.getElementById('progress-bar');
+    const scoreboard = document.getElementById('scoreboard');
+    const timerSec = document.getElementById('timer-sec');
+    const timerBox = document.getElementById('timer-box');
+
+    let currentIdx = 0;
+    let score = 0;
+    let timer = null;
+    let timeLeft = 15;
+    let userSelections = [];
+
+    function startTimer() {
+      timeLeft = 15;
+      timerSec.textContent = timeLeft;
+      timerBox.classList.remove('low-time');
+      
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeLeft--;
+        timerSec.textContent = timeLeft;
+        
+        if (timeLeft <= 4) {
+          timerBox.classList.add('low-time');
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          handleTimeout();
+        }
+      }, 1000);
+    }
+
+    function handleTimeout() {
+      const activeCard = cards[currentIdx];
+      const correctIdx = parseInt(activeCard.getAttribute('data-correct-idx'));
+      const options = activeCard.querySelectorAll('.option');
+      
+      options[correctIdx].classList.add('correct');
+      options[correctIdx].querySelector('i').className = 'fa-solid fa-circle-check';
+      options.forEach(btn => btn.classList.add('disabled'));
+
+      const qText = activeCard.querySelector('.question-text').textContent;
+      const correctText = options[correctIdx].querySelector('.option-text').textContent.trim();
+      userSelections.push({
+        question: qText,
+        selected: '(Time Out)',
+        correct: correctText,
+        isCorrect: false
+      });
+
+      setTimeout(advanceQuiz, 1800);
+    }
+
+    function selectAnswer(button, idx) {
+      clearInterval(timer);
+      
+      const activeCard = cards[currentIdx];
+      const correctIdx = parseInt(activeCard.getAttribute('data-correct-idx'));
+      const options = activeCard.querySelectorAll('.option');
+      const isCorrect = (idx === correctIdx);
+
+      options.forEach(btn => btn.classList.add('disabled'));
+
+      const qText = activeCard.querySelector('.question-text').textContent;
+      const selectedText = button.querySelector('.option-text').textContent.trim();
+      const correctText = options[correctIdx].querySelector('.option-text').textContent.trim();
+
+      if (isCorrect) {
+        score++;
+        scoreboard.textContent = `Score: ${score}`;
+        button.classList.add('correct');
+        button.querySelector('i').className = 'fa-solid fa-circle-check';
+      } else {
+        button.classList.add('incorrect');
+        button.querySelector('i').className = 'fa-solid fa-circle-xmark';
+        options[correctIdx].classList.add('correct');
+        options[correctIdx].querySelector('i').className = 'fa-solid fa-circle-check';
+      }
+
+      userSelections.push({
+        question: qText,
+        selected: selectedText,
+        correct: correctText,
+        isCorrect: isCorrect
+      });
+
+      setTimeout(advanceQuiz, 1500);
+    }
+
+    function advanceQuiz() {
+      cards[currentIdx].classList.remove('active');
+      currentIdx++;
+
+      if (currentIdx < cards.length) {
+        cards[currentIdx].classList.add('active');
+        updateProgress();
+        startTimer();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function updateProgress() {
+      const percentage = ((currentIdx) / cards.length) * 100;
+      progressBar.style.width = `${percentage}%`;
+    }
+
+    function finishQuiz() {
+      clearInterval(timer);
+      document.getElementById('quiz-game-panel').style.display = 'none';
+      document.getElementById('results-panel').style.display = 'flex';
+      
+      document.getElementById('final-score').textContent = `Your final score is: ${score} / ${cards.length}`;
+
+      const oldHighScore = localStorage.getItem(`highScore_${categoryKey}`);
+      if (oldHighScore === null || score > parseInt(oldHighScore)) {
+        localStorage.setItem(`highScore_${categoryKey}`, score);
+      }
+      
+      const oldAttempts = parseInt(localStorage.getItem(`attempts_${categoryKey}`) || 0);
+      localStorage.setItem(`attempts_${categoryKey}`, oldAttempts + 1);
+
+      const reviewList = document.getElementById('review-list');
+      reviewList.innerHTML = '';
+      
+      userSelections.forEach((item, index) => {
+        const itemClass = item.isCorrect ? 'correct-review' : 'incorrect-review';
+        const statusIcon = item.isCorrect ? '<i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.2rem;"></i>' : '<i class="fa-solid fa-circle-xmark" style="color: #ef4444; font-size: 1.2rem;"></i>';
+        
+        reviewList.innerHTML += `
+          <div class="review-item ${itemClass}">
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+              <span>${statusIcon}</span>
+              <span>Question ${index + 1}: ${item.question}</span>
+            </div>
+            <div style="font-size: 0.95rem; margin-left: 2rem; display: flex; flex-direction: column; gap: 0.25rem; opacity: 0.9;">
+              <div>Selected: <span style="font-weight: 700; color: ${item.isCorrect ? '#10b981' : '#ef4444'}">${item.selected}</span></div>
+              ${!item.isCorrect ? `<div>Correct Answer: <span style="font-weight: 700; color: #10b981;">${item.correct}</span></div>` : ''}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    startTimer();
+    updateProgress();
+  </script>
+</body>
+</html>

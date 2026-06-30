@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intellect Quiz | About Us</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom Global Stylesheet -->
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .about-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .about-card {
+      background-color: #4a9c9e; /* Original teal highlight card background */
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+    .about-card:hover {
+      transform: translateY(-5px);
+    }
+    .about-card-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .about-card p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .about-card h3 {
+      color: #ffffff;
+      font-size: 1.15rem;
+      margin-bottom: 0.25rem;
+    }
+    @media (max-width: 992px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        Intellect Quiz
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html" class="nav-link active"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="services.html" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Services</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="animated-fade-in" style="text-align: center; margin-bottom: 3rem;">
+      <h1 class="heading-gradient" style="font-size: 2.5rem; margin-bottom: 0.5rem; color: #117aa0;">About Intellect Quiz</h1>
+      <p class="subtitle">Where curiosity meets challenge, empowering active learning.</p>
+    </div>
+
+    <div class="about-grid animated-fade-in" style="animation-delay: 0.1s;">
+      
+      <!-- Text details -->
+      <div>
+        <h2 style="font-size: 1.75rem; border-left: 4px solid #117aa0; padding-left: 0.75rem; margin-bottom: 1.25rem; color: #4a9c9e;">Our Story</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">
+          Welcome to Intellect Quiz! We believe that active recall and immediate feedback are the cornerstones of effective learning. Intellect Quiz was developed to turn basic text-based questions into an engaging, gamified user experience. 
+        </p>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">
+          Whether you are testing your core CSS capabilities, refreshing your global geography knowledge, examining key moments in world history, or showing off your sports trivia database, our platform is built to make review simple, responsive, and beautifully interactive.
+        </p>
+        
+        <h2 style="font-size: 1.75rem; border-left: 4px solid #02c460; padding-left: 0.75rem; margin-top: 2rem; margin-bottom: 1.25rem; color: #4a9c9e;">Our Mission</h2>
+        <p style="color: var(--text-secondary); line-height: 1.7;">
+          Our mission is to provide clean, accessible, and informative web interfaces that help individuals test their skills in real-time. By implementing a standardized UI format, persistent browser state scoreboards, and fluid responsive designs, we aim to deliver an optimal desktop and mobile gaming experience for lifelong learners.
+        </p>
+      </div>
+
+      <!-- Feature Highlight Cards -->
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-card-icon">
+            <i class="fa-solid fa-gamepad"></i>
+          </div>
+          <div>
+            <h3>Interactive Play</h3>
+            <p>Clean selection feedbacks, animated progress trackers, and real-time score indicators.</p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <div class="about-card-icon">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </div>
+          <div>
+            <h3>Responsive Focus</h3>
+            <p>Perfect styling alignments that look premium on any smartphone, tablet, or monitor.</p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <div class="about-card-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3>Privacy Oriented</h3>
+            <p>Zero servers or logins required. All progress details and scores are kept completely on your device.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="footer-content">
+      <div>&copy; 2026 Intellect Quiz. Made for Visual and Technical Excellence.</div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Toggle for Mobile
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('mobile-open');
+    });
+  </script>
+</body>
+</html>

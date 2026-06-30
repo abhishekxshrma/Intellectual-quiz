@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intellect Quiz | Contact Us</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom Global Stylesheet -->
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+    .contact-card {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .contact-info-panel {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .info-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 8px;
+      background: rgba(26, 115, 232, 0.1);
+      border: 1px solid rgba(26, 115, 232, 0.2);
+      color: #1a73e8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    
+    /* Rebuilding original button styling */
+    .original-btn-primary {
+      background-color: #1a73e8;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+    .original-btn-primary:hover {
+      background-color: #145ab6;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    
+    /* Dynamic Feedback Modal Styling */
+    .success-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 14, 23, 0.6);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1100;
+    }
+    .success-card {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 3rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @media (max-width: 992px) {
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        Intellect Quiz
+      </a>
+      <button class="nav-toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="services.html" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> Services</a></li>
+        <li><a href="contact.html" class="nav-link active"><i class="fa-solid fa-paper-plane"></i> Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="animated-fade-in" style="text-align: center; margin-bottom: 3rem;">
+      <h1 class="heading-gradient" style="font-size: 2.5rem; margin-bottom: 0.5rem; color: #117aa0;">Contact Us</h1>
+      <p class="subtitle">Have questions or feedback? Drop us a message and we'll reply shortly.</p>
+    </div>
+
+    <div class="contact-layout animated-fade-in" style="animation-delay: 0.1s;">
+      
+      <!-- Contact Form -->
+      <div class="contact-card">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #333;">Send a Message</h2>
+        <form id="contactForm">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input class="glass-input" type="text" id="name" required placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input class="glass-input" type="email" id="email" required placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea class="glass-input" id="message" rows="5" required placeholder="Write your thoughts here..." style="resize: none; font-family: inherit;"></textarea>
+          </div>
+          <button class="original-btn-primary" type="submit">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <!-- Info Column -->
+      <div class="contact-info-panel">
+        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #333;">Get in Touch</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: -1rem; margin-bottom: 0.5rem;">
+          Reach out directly to our support crew for custom developer integrations or general quiz questions.
+        </p>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.15rem;">Email Support</h3>
+            <p style="font-size: 1rem; font-weight: 600; color: #333;">support@intellectquiz.com</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.15rem;">Call Us</h3>
+            <p style="font-size: 1rem; font-weight: 600; color: #333;">+1 (555) 234-5678</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.15rem;">Headquarters</h3>
+            <p style="font-size: 1rem; font-weight: 600; color: #333; line-height: 1.4;">
+              123 Innovation Way, Suite 400<br>
+              Tech District, SF 94103
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Success Modal -->
+  <div class="success-modal" id="successModal">
+    <div class="success-card">
+      <div style="width: 4.5rem; height: 4.5rem; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); color: #10b981; display: flex; justify-content: center; align-items: center; font-size: 2.25rem;">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div>
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: #333;">Thank You!</h2>
+        <p style="color: var(--text-secondary); line-height: 1.5;">
+          Your message has been processed successfully. Our support team will get in touch with you shortly.
+        </p>
+      </div>
+      <button class="btn-secondary-custom" id="closeModalBtn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;">Close</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="footer-content">
+      <div>&copy; 2026 Intellect Quiz. Made for Visual and Technical Excellence.</div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation Toggle for Mobile
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('mobile-open');
+    });
+
+    // Form Intercept and Success Modal logic
+    const contactForm = document.getElementById('contactForm');
+    const successModal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const submissionData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+        timestamp: new Date().toISOString()
+      };
+      
+      const existing = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+      existing.push(submissionData);
+      localStorage.setItem('contactSubmissions', JSON.stringify(existing));
+
+      successModal.style.display = 'flex';
+      contactForm.reset();
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      successModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === successModal) {
+        successModal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
