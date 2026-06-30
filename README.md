@@ -10,6 +10,12 @@
 
 ---
 
+## 📌 Project Status
+
+> **Note**: This is a **1-year academic/development project**. It is designed to be continuously updated, refactored, and expanded in the future as new ideas, features, and modern web standards are introduced.
+
+---
+
 ## 🌟 Key Features
 
 - **⏱️ Timed Gameplay**: Each question runs on a strict 15-second timer. The timer badge features a dynamic countdown warning (pulsing red visual cues) when time is running low (4 seconds left) to elevate the action.
